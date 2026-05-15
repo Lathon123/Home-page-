@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lathon's Online Trading — Master the Markets</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:       #08090f;
+  --bg1:      #0e1019;
+  --bg2:      #151824;
+  --bg3:      #1e2336;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.11);
+  --t1:       #eef0ff;
+  --t2:       #8b92b8;
+  --t3:       #404666;
+  --gold:     #7c5cfc;
+  --gold2:    #9b82fd;
+  --gold3:    rgba(124,92,252,0.13);
+  --teal:     #00d4ff;
+  --teal2:    rgba(0,212,255,0.09);
+  --up:       #00d4ff;
+  --dn:       #ff5e7d;
+  --accent:   #ff5e7d;
+  --accent2:  rgba(255,94,125,0.12);
+  --cream:    #eef0ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;}
+
+/* ── NAV ─────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);transition:all 0.3s;}
+.nav-inner{max-width:1240px;margin:0 auto;height:66px;display:flex;align-items:center;gap:20px;padding:0 5%;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--t1);text-decoration:none;display:flex;align-items:center;gap:10px;}
+.logo span{color:var(--gold);}
+.logo-badge{background:var(--gold);color:#08090f;font-size:9px;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+.nav-links{display:flex;gap:2px;margin-left:auto;align-items:center;}
+.nav-links a{color:var(--t2);text-decoration:none;font-size:13px;font-weight:500;padding:6px 13px;border-radius:8px;transition:all 0.2s;}
+.nav-links a:hover{color:var(--t1);background:var(--bg2);}
+.nav-cta{background:var(--gold)!important;color:#fff!important;font-weight:700!important;padding:8px 18px!important;border-radius:9px!important;}
+.nav-cta:hover{background:var(--gold2)!important;transform:translateY(-1px);}
+
+/* ── TICKER TAPE ─────────────────────────────────────── */
+.ticker-tape{background:var(--bg1);border-bottom:1px solid var(--border);overflow:hidden;padding:8px 0;margin-top:66px;}
+.ticker-inner{display:inline-flex;animation:tape 40s linear infinite;white-space:nowrap;}
+.ticker-inner:hover{animation-play-state:paused;}
+.t-item{display:inline-flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid var(--border);}
+.t-sym{font-size:11px;font-weight:700;color:var(--t1);font-family:'JetBrains Mono',monospace;}
+.t-price{font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace;}
+.t-chg{font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.t-up{color:var(--up);}
+.t-dn{color:var(--dn);}
+@keyframes tape{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero{min-height:92vh;display:flex;align-items:center;padding:80px 5% 70px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 75% 25%, rgba(124,92,252,0.1) 0%, transparent 65%),
+             radial-gradient(ellipse 45% 45% at 15% 75%, rgba(0,212,255,0.07) 0%, transparent 60%),
+             radial-gradient(ellipse 30% 30% at 50% 50%, rgba(255,94,125,0.05) 0%, transparent 70%);}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:55px 55px;}
+.hero-inner{max-width:1240px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:center;position:relative;}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.25);border-radius:99px;padding:5px 16px 5px 8px;margin-bottom:28px;animation:fadeUp 0.6s ease both;}
+.eyebrow-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.eyebrow-text{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;}
+
+h1{font-family:'DM Serif Display',serif;font-size:clamp(38px,5vw,68px);line-height:1.05;color:var(--t1);margin-bottom:22px;animation:fadeUp 0.7s ease 0.1s both;}
+h1 em{color:var(--gold);font-style:normal;}
+h1 .hl2{color:var(--teal);}
+
+.hero-sub{font-size:17px;color:var(--t2);line-height:1.8;margin-bottom:36px;max-width:480px;animation:fadeUp 0.7s ease 0.2s both;}
+
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 0.7s ease 0.3s both;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:11px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.22s;border:none;font-family:'DM Sans',sans-serif;letter-spacing:0.2px;}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 36px rgba(124,92,252,0.35);}
+.btn-ghost{background:transparent;color:var(--t1);border:1.5px solid var(--border2);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
+
+.hero-trust{display:flex;gap:32px;margin-top:40px;padding-top:28px;border-top:1px solid var(--border);animation:fadeUp 0.7s ease 0.4s both;}
+.ht-item{}
+.ht-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--t1);}
+.ht-num span{color:var(--gold);font-size:18px;}
+.ht-lbl{font-size:11px;color:var(--t3);margin-top:1px;font-weight:500;text-transform:uppercase;letter-spacing:0.8px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO RIGHT — FLOATING CARDS ─────────────────────── */
+.hero-right{position:relative;animation:fadeUp 0.8s ease 0.2s both;}
+.hero-card-main{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;padding:26px;position:relative;overflow:hidden;}
+.hero-card-main::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal),var(--accent));}
+
+.card-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.card-sym{font-family:'DM Serif Display',serif;font-size:18px;color:var(--t1);}
+.card-badge{background:rgba(56,191,160,0.15);border:1px solid rgba(56,191,160,0.3);color:var(--teal);font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:0.5px;}
+.card-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;color:var(--t1);margin-bottom:4px;}
+.card-chg{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--up);background:rgba(56,191,160,0.1);padding:3px 10px;border-radius:99px;margin-bottom:20px;}
+
+.sparkline{height:70px;display:flex;align-items:flex-end;gap:3px;margin-bottom:20px;}
+.spark-bar{flex:1;background:var(--teal);border-radius:3px 3px 0 0;opacity:0.7;transition:opacity 0.2s;}
+.spark-bar:hover{opacity:1;}
+.spark-bar.up{background:var(--teal);}
+.spark-bar.dn{background:var(--dn);}
+
+.card-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:16px;border-top:1px solid var(--border);}
+.cs-item .cs-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;}
+.cs-item .cs-val{font-size:13px;font-weight:700;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+
+.float-mini{position:absolute;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:14px 18px;backdrop-filter:blur(10px);}
+.float-mini-1{bottom:-22px;left:-28px;animation:floatY 4s ease-in-out infinite;}
+.float-mini-2{top:-18px;right:-20px;animation:floatY 4s ease-in-out 2s infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.fm-label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:4px;}
+.fm-val{font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.fm-up{color:var(--up);}
+.fm-dn{color:var(--dn);}
+.fm-gold{color:var(--gold);}
+
+/* ── TRUST BAR ───────────────────────────────────────── */
+.trust-bar{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 5%;}
+.trust-bar-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.trust-item{display:flex;align-items:center;gap:12px;}
+.trust-icon{width:38px;height:38px;border-radius:10px;background:var(--gold3);display:flex;align-items:center;justify-content:center;font-size:19px;}
+.trust-text{font-size:13px;color:var(--t2);font-weight:500;}
+.trust-text strong{color:var(--t1);}
+.trust-div{width:1px;height:32px;background:var(--border);}
+
+/* ── SECTIONS ─────────────────────────────────────────── */
+section{padding:100px 5%;}
+.section-inner{max-width:1240px;margin:0 auto;}
+.section-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::before{content:'';width:20px;height:2px;background:var(--gold);border-radius:1px;}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,50px);line-height:1.1;color:var(--t1);margin-bottom:14px;}
+.section-sub{font-size:16px;color:var(--t2);max-width:560px;line-height:1.8;margin-bottom:56px;}
+
+/* ── WHAT YOU GET ─────────────────────────────────────── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.feat-card{background:var(--bg1);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.3s;position:relative;overflow:hidden;}
+.feat-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%, rgba(124,92,252,0.06) 0%, transparent 70%);opacity:0;transition:opacity 0.3s;}
+.feat-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.feat-card:hover::after{opacity:1;}
+.feat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
+.fi-gold{background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.2);}
+.fi-teal{background:rgba(56,191,160,0.1);border:1px solid rgba(56,191,160,0.2);}
+.fi-blue{background:rgba(91,130,204,0.12);border:1px solid rgba(91,130,204,0.2);}
+.feat-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--t1);margin-bottom:10px;}
+.feat-desc{font-size:14px;color:var(--t2);line-height:1.75;}
+.feat-pill{display:inline-flex;margin-top:16px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:99px;}
+.fp-gold{background:var(--gold3);color:var(--gold);}
+.fp-teal{background:var(--teal2);color:var(--teal);}
+.fp-blue{background:var(--accent2);color:var(--accent);}
+
+/* ── PLANS / PRICING ─────────────────────────────────── */
+.plans-section{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:860px;margin:0 auto;}
+.plan-card{background:var(--bg);border:1px solid var(--border2);border-radius:22px;padding:38px 36px;position:relative;overflow:hidden;transition:all 0.3s;}
+.plan-card.featured{border-color:var(--gold);background:linear-gradient(135deg,var(--bg) 0%,rgba(124,92,252,0.05) 100%);}
+.plan-card:hover{transform:translateY(-5px);box-shadow:0 24px 70px rgba(0,0,0,0.35);}
+.plan-card.featured:hover{box-shadow:0 24px 70px rgba(124,92,252,0.14);}
+.plan-badge{position:absolute;top:20px;right:20px;background:var(--gold);color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:99px;letter-spacing:1.5px;text-transform:uppercase;}
+.plan-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:14px;}
+.plan-name{font-family:'DM Serif Display',serif;font-size:28px;color:var(--t1);margin-bottom:8px;}
+.plan-desc{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.7;}
+.plan-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.plan-price{font-family:'DM Serif Display',serif;font-size:48px;color:var(--t1);}
+.plan-price-note{font-size:13px;color:var(--t3);}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:36px;}
+.plan-features li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--t2);}
+.pf-check{width:20px;height:20px;border-radius:6px;background:rgba(56,191,160,0.12);border:1px solid rgba(56,191,160,0.25);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--teal);flex-shrink:0;margin-top:2px;}
+.plan-cta{display:block;text-align:center;padding:15px 24px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all 0.22s;letter-spacing:0.2px;}
+.plan-cta-gold{background:var(--gold);color:#fff;}
+.plan-cta-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 36px rgba(124,92,252,0.35);}
+.plan-cta-ghost{background:transparent;color:var(--t1);border:1.5px solid var(--border2);}
+.plan-cta-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── TESTIMONIALS ─────────────────────────────────────── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.testi-card{background:var(--bg1);border:1px solid var(--border);border-radius:18px;padding:28px;transition:all 0.3s;position:relative;}
+.testi-card:hover{border-color:var(--border2);transform:translateY(-3px);}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px;}
+.testi-star{color:var(--gold);font-size:14px;}
+.testi-text{font-size:14px;color:var(--t2);line-height:1.78;margin-bottom:20px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold3);border:2px solid rgba(212,168,67,0.3);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:17px;color:var(--gold);}
+.testi-name{font-size:14px;font-weight:600;color:var(--t1);}
+.testi-role{font-size:11px;color:var(--t3);margin-top:1px;}
+.testi-gain{position:absolute;top:20px;right:20px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--up);background:rgba(56,191,160,0.1);padding:3px 10px;border-radius:99px;}
+
+/* ── HOW IT WORKS ─────────────────────────────────────── */
+.steps-wrapper{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.steps-wrapper::before{content:'';position:absolute;top:28px;left:calc(12.5% + 14px);right:calc(12.5% + 14px);height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--gold),var(--border2),transparent);}
+.step-item{text-align:center;padding:0 20px;position:relative;}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold);margin:0 auto 20px;position:relative;z-index:1;}
+.step-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--t1);margin-bottom:10px;}
+.step-desc{font-size:13px;color:var(--t2);line-height:1.7;}
+
+/* ── CTA BANNER ───────────────────────────────────────── */
+.cta-section{padding:100px 5%;}
+.cta-banner{max-width:1240px;margin:0 auto;background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border:1px solid var(--border2);border-radius:28px;padding:70px;text-align:center;position:relative;overflow:hidden;}
+.cta-banner::before{content:'';position:absolute;top:-50%;left:-20%;width:60%;height:200%;background:radial-gradient(ellipse,rgba(124,92,252,0.09) 0%,transparent 65%);pointer-events:none;}
+.cta-banner::after{content:'';position:absolute;top:-50%;right:-20%;width:50%;height:200%;background:radial-gradient(ellipse,rgba(0,212,255,0.07) 0%,transparent 65%);pointer-events:none;}
+.cta-banner h2{margin-bottom:18px;}
+.cta-banner p{font-size:17px;color:var(--t2);max-width:520px;margin:0 auto 40px;line-height:1.8;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* ── FOOTER ───────────────────────────────────────────── */
+footer{background:var(--bg1);border-top:1px solid var(--border);padding:50px 5% 32px;}
+.footer-inner{max-width:1240px;margin:0 auto;}
+.footer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:40px;margin-bottom:40px;flex-wrap:wrap;}
+.footer-brand p{font-size:13px;color:var(--t3);max-width:280px;margin-top:12px;line-height:1.7;}
+.footer-links{display:flex;gap:50px;flex-wrap:wrap;}
+.fl-col h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:16px;}
+.fl-col a{display:block;font-size:13px;color:var(--t2);text-decoration:none;margin-bottom:10px;transition:color 0.2s;}
+.fl-col a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:12px;color:var(--t3);}
+.footer-disc{font-size:11px;color:var(--t3);max-width:600px;line-height:1.5;}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:50px;}
+  .hero-right{display:none;}
+  .features-grid{grid-template-columns:1fr 1fr;}
+  .plans-grid{grid-template-columns:1fr;}
+  .testimonials-grid{grid-template-columns:1fr;}
+  .steps-wrapper{grid-template-columns:1fr 1fr;gap:30px;}
+  .steps-wrapper::before{display:none;}
+  .cta-banner{padding:50px 36px;}
+}
+@media(max-width:640px){
+  .features-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .hero{padding:60px 5% 50px;}
+  h1{font-size:36px;}
+  .trust-bar-inner{flex-direction:column;align-items:flex-start;}
+  .trust-div{display:none;}
+  .steps-wrapper{grid-template-columns:1fr;}
+  .footer-top{flex-direction:column;}
+  .footer-links{flex-direction:column;gap:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="home.html">
+      Lathon's <span>Trading</span>
+      <div class="logo-badge">PRO</div>
+    </a>
+    <div class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="index__1___1_.html">Course</a>
+      <a href="#plans">Pricing</a>
+      <a href="#testimonials">Reviews</a>
+      <a href="#plans" class="nav-cta">Get Started →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── TICKER TAPE ─────────────────────────────────────── -->
+<div class="ticker-tape">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        <span class="eyebrow-text">Now enrolling — limited spots available</span>
+      </div>
+      <h1>Learn to Trade<br>the <em>Right</em> Way —<br>From <span class="hl2">Day One</span></h1>
+      <p class="hero-sub">
+        Lathon's Online Trading gives you a structured, professional path from complete beginner to confident market participant. No fluff, no hype — just the real skills that matter.
+      </p>
+      <div class="hero-btns">
+        <a href="#plans" class="btn btn-gold">
+          <span>Enroll Now</span>
+          <span>→</span>
+        </a>
+        <a href="index__1___1_.html" class="btn btn-ghost">
+          <span>View the Course</span>
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="ht-item">
+          <div class="ht-num">500<span>+</span></div>
+          <div class="ht-lbl">Students Enrolled</div>
+        </div>
+        <div class="ht-item">
+          <div class="ht-num">8</div>
+          <div class="ht-lbl">Core Chapters</div>
+        </div>
+        <div class="ht-item">
+          <div class="ht-num">4.9<span>★</span></div>
+          <div class="ht-lbl">Avg Rating</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="float-mini float-mini-2">
+        <div class="fm-label">Win Rate</div>
+        <div class="fm-val fm-gold">68.4%</div>
+      </div>
+      <div class="hero-card-main">
+        <div class="card-top-row">
+          <div class="card-sym">AAPL · Portfolio</div>
+          <div class="card-badge">▲ LIVE</div>
+        </div>
+        <div class="card-price" id="heroPrice">$194.28</div>
+        <div class="card-chg"><span>▲</span> +2.47 (+1.29%)</div>
+        <div class="sparkline" id="heroSpark"></div>
+        <div class="card-stats">
+          <div class="cs-item">
+            <div class="cs-lbl">Open</div>
+            <div class="cs-val">192.14</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-lbl">Volume</div>
+            <div class="cs-val">54.3M</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-lbl">52W High</div>
+            <div class="cs-val">199.62</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-lbl">P/E Ratio</div>
+            <div class="cs-val">29.4x</div>
+          </div>
+        </div>
+      </div>
+      <div class="float-mini float-mini-1">
+        <div class="fm-label">Today's P&amp;L</div>
+        <div class="fm-val fm-up">+$483.20</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ───────────────────────────────────────── -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item">
+      <div class="trust-icon">📚</div>
+      <div class="trust-text"><strong>8 Structured Chapters</strong><br>Foundation to advanced strategies</div>
+    </div>
+    <div class="trust-div"></div>
+    <div class="trust-item">
+      <div class="trust-icon">📊</div>
+      <div class="trust-text"><strong>Real Chart Analysis</strong><br>Interactive tools & live examples</div>
+    </div>
+    <div class="trust-div"></div>
+    <div class="trust-item">
+      <div class="trust-icon">🧠</div>
+      <div class="trust-text"><strong>Knowledge Quizzes</strong><br>Test your skills at every step</div>
+    </div>
+    <div class="trust-div"></div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <div class="trust-text"><strong>Secure Enrollment</strong><br>Powered by Stripe — instant access</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHAT YOU GET ─────────────────────────────────────── -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">What's Included</div>
+    <h2>Everything You Need to<br>Start Trading with Confidence</h2>
+    <p class="section-sub">Our curriculum is built the way real traders think — starting with the fundamentals and building up to professional-grade skills.</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon fi-gold">📈</div>
+        <div class="feat-title">Market Foundations</div>
+        <p class="feat-desc">Understand how stocks, markets, and exchanges work. Learn the language of trading — from tickers and order types to market cap and earnings reports.</p>
+        <div class="feat-pill fp-gold">Beginner Friendly</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-teal">🕯️</div>
+        <div class="feat-title">Technical Analysis</div>
+        <p class="feat-desc">Master candlestick charts, key indicators (RSI, MACD, moving averages), and chart patterns that professional traders use every single day.</p>
+        <div class="feat-pill fp-teal">Hands-On Practice</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-blue">🛡️</div>
+        <div class="feat-title">Risk Management</div>
+        <p class="feat-desc">Position sizing, stop-losses, and portfolio protection strategies. The #1 skill separating profitable traders from those who blow up their accounts.</p>
+        <div class="feat-pill fp-blue">Critical Skill</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-teal">🧩</div>
+        <div class="feat-title">Trading Psychology</div>
+        <p class="feat-desc">Fear, greed, FOMO — the emotional traps that kill most traders. Learn how to build discipline, stick to your plan, and trade like a professional.</p>
+        <div class="feat-pill fp-teal">Mindset Training</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-gold">⚡</div>
+        <div class="feat-title">Live Strategy Sessions</div>
+        <p class="feat-desc">Walk through real trade setups with Lathon. See how to identify entries, set targets, and manage open positions from start to finish.</p>
+        <div class="feat-pill fp-gold">Real Trades</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-blue">🎯</div>
+        <div class="feat-title">Quizzes & Progress Tracker</div>
+        <p class="feat-desc">Reinforce every lesson with knowledge checks and an interactive checklist. You won't move forward until the concept is locked in.</p>
+        <div class="feat-pill fp-blue">Track Progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ─────────────────────────────────────── -->
+<section style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2>Your Path to the Market</h2>
+    <p class="section-sub">Four simple steps from enrollment to executing your first real trade.</p>
+    <div class="steps-wrapper">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-title">Enroll</div>
+        <p class="step-desc">Choose your plan, complete secure checkout via Stripe, and get immediate lifetime access.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-title">Learn</div>
+        <p class="step-desc">Work through 8 chapters at your own pace — each one builds on the last, no gaps in knowledge.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-title">Practice</div>
+        <p class="step-desc">Use real chart tools and paper trade for at least 30 days before risking a single dollar.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-title">Trade</div>
+        <p class="step-desc">Open your brokerage, apply your edge, and manage your capital like a professional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING / PLANS ─────────────────────────────────── -->
+<section class="plans-section" id="plans">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="section-label" style="justify-content:center;">Enrollment</div>
+      <h2>Choose Your Plan</h2>
+      <p class="section-sub" style="margin:0 auto;">Secure checkout powered by Stripe. Instant course access upon payment.</p>
+    </div>
+    <div class="plans-grid">
+
+      <!-- Starter Plan -->
+      <div class="plan-card">
+        <div class="plan-label">Starter</div>
+        <div class="plan-name">Foundation Course</div>
+        <p class="plan-desc">The complete beginner-to-intermediate trading education. Everything you need to build a real edge in the market.</p>
+        <div class="plan-price-row">
+          <div class="plan-price">$50</div>
+          <div class="plan-price-note">one-time payment</div>
+        </div>
+        <ul class="plan-features">
+          <li><div class="pf-check">✓</div><span>All 8 core trading chapters</span></li>
+          <li><div class="pf-check">✓</div><span>Interactive chart tools & indicators</span></li>
+          <li><div class="pf-check">✓</div><span>Knowledge quizzes & progress tracker</span></li>
+          <li><div class="pf-check">✓</div><span>Risk management framework</span></li>
+          <li><div class="pf-check">✓</div><span>Lifetime course access</span></li>
+        </ul>
+        <a href="https://buy.stripe.com/bJe7sKcyzeY28vS3YU38401" class="plan-cta plan-cta-ghost" target="_blank" rel="noopener">
+          Enroll — Foundation →
+        </a>
+      </div>
+
+      <!-- Pro Plan -->
+      <div class="plan-card featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-label">Pro</div>
+        <div class="plan-name">Advanced Mastery</div>
+        <p class="plan-desc">Everything in Foundation plus advanced strategy sessions, live trade walkthroughs, and direct access to Lathon's premium community.</p>
+        <div class="plan-price-row">
+          <div class="plan-price">$110</div>
+          <div class="plan-price-note">one-time payment</div>
+        </div>
+        <ul class="plan-features">
+          <li><div class="pf-check">✓</div><span>Everything in Foundation</span></li>
+          <li><div class="pf-check">✓</div><span>Advanced options & momentum strategies</span></li>
+          <li><div class="pf-check">✓</div><span>Live trade walkthrough recordings</span></li>
+          <li><div class="pf-check">✓</div><span>Premium trading community access</span></li>
+          <li><div class="pf-check">✓</div><span>Priority Q&amp;A with Lathon</span></li>
+          <li><div class="pf-check">✓</div><span>Future updates included free</span></li>
+          <li><div class="pf-check">✓</div><span>Free website links to start reselling — included at no extra cost</span></li>
+        </ul>
+        <a href="https://buy.stripe.com/3cI7sK9mn5ns6nKbrm38400" class="plan-cta plan-cta-gold" target="_blank" rel="noopener">
+          Enroll — Pro Access →
+        </a>
+      </div>
+
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--t3);margin-top:28px;">🔒 Secure checkout · Stripe encrypted · Instant access · No subscriptions</p>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ─────────────────────────────────────── -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-label">Student Reviews</div>
+    <h2>Real Results from Real Students</h2>
+    <p class="section-sub">Traders at every level have used this course to build their edge and take their first confident steps in the market.</p>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-gain">+34% YTD</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I tried three other courses before this one. Nothing clicked until I went through Lathon's material. The risk management chapter alone saved me from a huge mistake."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">M</div>
+          <div>
+            <div class="testi-name">Marcus T.</div>
+            <div class="testi-role">Retail Trader · 8 months in</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-gain">First green month</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Before this course I had no idea what I was doing — just gambling. Now I have a real process. I know when to enter, when to exit, and when to stay out entirely."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">J</div>
+          <div>
+            <div class="testi-name">Jasmine R.</div>
+            <div class="testi-role">Swing Trader · 5 months in</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-gain">+$2,800 month 3</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The interactive quizzes and checklist kept me accountable in a way no other course did. Lathon's style of teaching just makes sense. Worth every penny."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">D</div>
+          <div>
+            <div class="testi-name">DeShawn K.</div>
+            <div class="testi-role">Day Trader · 4 months in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ───────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-banner">
+    <div class="section-label" style="justify-content:center;">Ready?</div>
+    <h2>Your Edge Starts Here</h2>
+    <p>Stop watching the market from the sidelines. Enroll today, build your foundation, and trade with the confidence that comes from actually knowing what you're doing.</p>
+    <div class="cta-btns">
+      <a href="https://buy.stripe.com/bJe7sKcyzeY28vS3YU38401" class="btn btn-gold" target="_blank" rel="noopener">
+        <span>Get Pro Access</span>
+        <span>→</span>
+      </a>
+      <a href="https://buy.stripe.com/3cI7sK9mn5ns6nKbrm38400" class="btn btn-ghost" target="_blank" rel="noopener">
+        <span>Start with Foundation</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="home.html" style="margin-bottom:4px;display:inline-flex;">
+          Lathon's <span style="color:var(--gold);margin-left:6px;">Trading</span>
+          <div class="logo-badge" style="margin-left:8px;">PRO</div>
+        </a>
+        <p>Professional trading education for the self-directed investor. Build real skills, manage real risk, and trade with real confidence.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <h4>Course</h4>
+          <a href="index__1___1_.html">Course Overview</a>
+          <a href="#plans">Pricing</a>
+          <a href="#testimonials">Reviews</a>
+        </div>
+        <div class="fl-col">
+          <h4>Enroll</h4>
+          <a href="https://buy.stripe.com/3cI7sK9mn5ns6nKbrm38400" target="_blank" rel="noopener">Foundation Plan</a>
+          <a href="https://buy.stripe.com/bJe7sKcyzeY28vS3YU38401" target="_blank" rel="noopener">Pro Plan</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Lathon's Online Trading. All rights reserved.</div>
+      <div class="footer-disc">⚠️ Trading involves risk. Past results do not guarantee future performance. This course is for educational purposes only and does not constitute financial advice.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── TICKER TAPE ────────────────────────────────────────────
+const tickers = [
+  {sym:'AAPL',price:'194.28',chg:'+1.29%',up:true},
+  {sym:'TSLA',price:'242.84',chg:'+3.18%',up:true},
+  {sym:'NVDA',price:'878.36',chg:'+2.74%',up:true},
+  {sym:'SPY', price:'521.44',chg:'+0.82%',up:true},
+  {sym:'AMZN',price:'189.71',chg:'-0.44%',up:false},
+  {sym:'MSFT',price:'414.22',chg:'+1.01%',up:true},
+  {sym:'META',price:'488.63',chg:'+1.62%',up:true},
+  {sym:'GOOGL',price:'172.38',chg:'-0.27%',up:false},
+  {sym:'QQQ', price:'448.20',chg:'+0.91%',up:true},
+  {sym:'AMD', price:'168.94',chg:'+4.23%',up:true},
+];
+
+const ticker = document.getElementById('ticker');
+const doubled = [...tickers,...tickers];
+ticker.innerHTML = doubled.map(t=>`
+  <div class="t-item">
+    <span class="t-sym">${t.sym}</span>
+    <span class="t-price">${t.price}</span>
+    <span class="t-chg ${t.up?'t-up':'t-dn'}">${t.chg}</span>
+  </div>
+`).join('');
+
+// ── HERO SPARKLINE ─────────────────────────────────────────
+const heights = [30,38,28,45,42,55,52,60,58,72,68,74,65,80,77,90,85,95,88,100];
+const spark = document.getElementById('heroSpark');
+if(spark){
+  spark.innerHTML = heights.map((h,i)=>{
+    const isUp = i===0||heights[i]>=heights[i-1];
+    return `<div class="spark-bar ${isUp?'up':'dn'}" style="height:${h}%"></div>`;
+  }).join('');
+}
+
+// ── LIVE PRICE ANIMATION ───────────────────────────────────
+const priceEl = document.getElementById('heroPrice');
+let base = 194.28;
+setInterval(()=>{
+  base += (Math.random()-0.48)*0.18;
+  base = Math.max(192,Math.min(197,base));
+  if(priceEl) priceEl.textContent = '$'+base.toFixed(2);
+},1800);
+
+// ── SCROLL FADE-IN ─────────────────────────────────────────
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in-view');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.feat-card,.plan-card,.testi-card,.step-item').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(28px)';
+  el.style.transition='opacity 0.55s ease, transform 0.55s ease';
+  observer.observe(el);
+});
+document.addEventListener('animationframe',()=>{});
+const style = document.createElement('style');
+style.textContent='.in-view{opacity:1!important;transform:translateY(0)!important;}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
